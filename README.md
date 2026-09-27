@@ -74,3 +74,9 @@ test.txt
 - Store embeddings locally in ChromaDB (persists to disk)
 - Semantic search retrieval with source citations
 - Runs 100% locally — no data sent to any API
+
+## Adding your own documents
+Place your files in the project folder:
+- PDFs → update `PyPDFLoader("your_file.pdf")` in `embedder.py`
+- Text files → update `TextLoader("your_file.txt")`
+- Websites → update the URL in `WebBaseLoader(...)`
