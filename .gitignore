@@ -15,3 +15,11 @@ __pycache__/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Personal documents
+*.pdf
+*.txt
+*.docx
+*.csv
+*.md
+!README.md
