@@ -12,6 +12,7 @@
 html{height:100%;-webkit-text-size-adjust:100%;}
 body{height:100%;overflow:hidden;}
 
+
 /* ─── TOKENS ─────────────────────────────────────────── */
 :root{
   --bg:#0A0A0A;
@@ -538,7 +539,7 @@ footer{
 <div class="toast" id="toast"></div>
 
 <script>
-const API = 'http://localhost:8000';
+const API = window.location.origin;
 let sessionId = '';
 let msgCount = 0;
 const indexedDocs = new Set();
