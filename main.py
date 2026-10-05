@@ -8,7 +8,7 @@ from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_community.embeddings import FastEmbedEmbeddings
 from langchain_chroma import Chroma
 from langchain_groq import ChatGroq
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
@@ -20,7 +20,7 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], all
 
 # --- Load vectorstore ---
 print("Loading vectorstore...")
-embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+embeddings = FastEmbedEmbeddings(model_name="BAAI/bge-small-en-v1.5")
 vectorstore = Chroma(persist_directory="./chroma_db", embedding_function=embeddings)
 retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
 print(f"Vectorstore loaded — {vectorstore._collection.count()} chunks ready")

@@ -1,33 +1,33 @@
 import os
 os.environ["USER_AGENT"] = "rag-project/1.0"
 
-from langchain_community.document_loaders import PyPDFLoader, TextLoader
+from langchain_community.document_loaders import DirectoryLoader, PyPDFLoader, TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.embeddings import SentenceTransformerEmbeddings
+from langchain_community.embeddings import FastEmbedEmbeddings
 from langchain_community.vectorstores import Chroma
 
 # --- Load ---
 all_docs = []
-all_docs += PyPDFLoader(r"D:\rag-project\OOPS Assignment-1-2026.pdf").load()
-all_docs += TextLoader(r"D:\rag-project\test.txt").load()
+pdf_loader = DirectoryLoader("./my_docs", glob="**/*.pdf", loader_cls=PyPDFLoader)
+txt_loader = DirectoryLoader("./my_docs", glob="**/*.txt", loader_cls=TextLoader)
+all_docs += pdf_loader.load()
+all_docs += txt_loader.load()
 
-# --- Chunk ---
+
+# Chunk
 splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
 chunks = splitter.split_documents(all_docs)
-print(f"Chunks ready to embed: {len(chunks)}")
+print(f"Created {len(chunks)} chunks")
 
-# --- Embed and store ---
-print("Loading embedding model... (first run downloads it, may take a minute)")
-embeddings = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
-
-print("Embedding chunks and saving to ChromaDB...")
+# Embed and store
+print("Embedding with FastEmbed...")
+embeddings = FastEmbedEmbeddings(model_name="BAAI/bge-small-en-v1.5")
 vectorstore = Chroma.from_documents(
     documents=chunks,
     embedding=embeddings,
-    persist_directory="./chroma_db"   # saves to disk in your project folder
+    persist_directory="./chroma_db"
 )
-
-print(f"Done! {vectorstore._collection.count()} chunks stored in ChromaDB")
+print(f"Done — {vectorstore._collection.count()} chunks stored")
 
 # --- Quick test: search the vectorstore ---
 print("\n--- Test retrieval ---")

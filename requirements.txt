@@ -4,11 +4,10 @@ langchain
 langchain-core
 langchain-community
 langchain-chroma
-langchain-huggingface
 langchain-groq
 langchain-text-splitters
 chromadb
-sentence-transformers
+fastembed
 pypdf
 beautifulsoup4
 python-dotenv
